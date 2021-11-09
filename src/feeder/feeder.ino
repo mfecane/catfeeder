@@ -3,14 +3,19 @@
 const byte feedTime[][2] = {
   {9, 0},
   {21, 0},
+  {16, 45},
+  {16, 50},
+  {16, 55},
+  {17, 0},
+  {17, 05},
 };
 
 #define DEBUG                           // comment for debug
 
 #define EE_RESET 4                      // timer reset flag
 #define BTN_PIN 2                       // button pin
-#define STEPS_FRW 18                    // steps forward
-#define STEPS_BKW 10                    // steps backward
+#define STEPS_FRW 54                    // steps forward
+#define STEPS_BKW 30                    // steps backward
 #define FEED_SPEED 3000                 // stepper_delay
 #define STEPER_MOTOR_DIRECTION -1       // modify direction of stepper motor
 #define CHECK_TIMEOUT 500               // refresh timeout
@@ -106,12 +111,10 @@ void disableMotor() {
 void oneRev() {
   static byte val = 0;  
   for (byte i = 0; i < STEPS_BKW; i++) {
-    val+=STEPER_MOTOR_DIRECTION
-    runMotor(val);
+    runMotor(val++);
   }
   for (byte i = 0; i < STEPS_FRW; i++) {
-    val-=STEPER_MOTOR_DIRECTION
-    runMotor(val);
+    runMotor(val--);
   }
 }
 
