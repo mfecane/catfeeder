@@ -1,21 +1,17 @@
 // Shamelessly stolen from alexgyver
 
 const byte feedTime[][2] = {
-  {9, 0},
-  {21, 0},
-  {16, 45},
-  {16, 50},
-  {16, 55},
-  {17, 0},
-  {17, 05},
+  {7, 0},
+  {15, 0},
+  {21, 0}
 };
 
 #define DEBUG                           // comment for debug
 
-#define EE_RESET 4                      // timer reset flag
+#define EE_RESET 1                      // timer reset flag
 #define BTN_PIN 2                       // button pin
-#define STEPS_FRW 54                    // steps forward
-#define STEPS_BKW 30                    // steps backward
+#define STEPS_FRW 28                    // steps forward
+#define STEPS_BKW 12                    // steps backward
 #define FEED_SPEED 3000                 // stepper_delay
 #define STEPER_MOTOR_DIRECTION -1       // modify direction of stepper motor
 #define CHECK_TIMEOUT 500               // refresh timeout
@@ -29,7 +25,7 @@ char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursd
 
 RTC_DS3231 rtc;
 EncButton<BTN_PIN> btn;
-int feedAmount = 300;
+int feedAmount = 60;
 
 void setup() {
 #ifdef DEBUG
@@ -70,6 +66,9 @@ void loop() {
     Serial.print(':');
     Serial.print(now.second(), DEC);
     Serial.println();
+    Serial.print("feedAmount");
+    Serial.print(feedAmount, DEC);
+    Serial.println();
 #endif
 
     if (prevMin != now.minute()) {
@@ -100,6 +99,10 @@ void loop() {
 }
 
 void feed() {
+  Serial.print("feedAmount");
+  Serial.print(feedAmount, DEC);
+  Serial.print("\t");
+  
   for (int i = 0; i < feedAmount; i++) oneRev();      // крутим на количество feedAmount
   disableMotor();
 }
@@ -111,10 +114,10 @@ void disableMotor() {
 void oneRev() {
   static byte val = 0;  
   for (byte i = 0; i < STEPS_BKW; i++) {
-    runMotor(val++);
+    runMotor(val--);
   }
   for (byte i = 0; i < STEPS_FRW; i++) {
-    runMotor(val--);
+    runMotor(val++);
   }
 }
 
