@@ -2,13 +2,14 @@
 
 const byte feedTime[][2] = {
   {7, 0},
-  {15, 0},
-  {21, 0}
+  {13, 0},
+  {19, 0},
+  {23, 0}
 };
 
 #define DEBUG                           // comment for debug
 
-#define EE_RESET 1                      // timer reset flag
+#define EE_RESET 5                      // timer reset flag
 #define BTN_PIN 2                       // button pin
 #define STEPS_FRW 28                    // steps forward
 #define STEPS_BKW 12                    // steps backward
@@ -25,7 +26,7 @@ char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursd
 
 RTC_DS3231 rtc;
 EncButton<BTN_PIN> btn;
-int feedAmount = 60;
+int feedAmount = 30;
 
 void setup() {
 #ifdef DEBUG
